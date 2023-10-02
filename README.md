@@ -1,0 +1,1 @@
+# campus_hotel_artichaut
