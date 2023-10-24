@@ -1,9 +1,6 @@
 package com.campus.campus_hotel_artichaut_backend.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
 
@@ -13,6 +10,7 @@ import java.util.Date;
 @Entity
 public class Billing {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private Date startDate;
