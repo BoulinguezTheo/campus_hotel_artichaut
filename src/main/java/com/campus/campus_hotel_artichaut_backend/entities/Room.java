@@ -1,6 +1,7 @@
 package com.campus.campus_hotel_artichaut_backend.entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.validation.constraints.NotBlank;
@@ -32,6 +33,6 @@ public class Room {
     @NotNull
     private Reference reference;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private Collection<Media> media;
 }

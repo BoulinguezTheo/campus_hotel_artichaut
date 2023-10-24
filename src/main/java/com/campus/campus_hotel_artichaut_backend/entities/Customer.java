@@ -33,9 +33,9 @@ public class Customer {
     @NotNull
     private String email;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinTable(name = "medias_customers",
-            joinColumns = {@JoinColumn(name = "media_id", referencedColumnName = "id")},
+            joinColumns = {@JoinColumn(name = "customer_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "avatar_id", referencedColumnName = "id")})
     private Media avatar;
 

@@ -1,6 +1,7 @@
 package com.campus.campus_hotel_artichaut_backend.entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -23,6 +24,6 @@ public class Billing {
     @PositiveOrZero
     private int price;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private Reservation reservation;
 }

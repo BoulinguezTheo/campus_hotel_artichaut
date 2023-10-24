@@ -1,6 +1,7 @@
 package com.campus.campus_hotel_artichaut_backend.entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.validation.constraints.NotBlank;
@@ -21,6 +22,6 @@ public class Media {
     @NotNull
     private MediaType type;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private Collection<News> news;
 }

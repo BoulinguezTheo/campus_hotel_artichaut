@@ -17,10 +17,10 @@ public class Reservation {
     @Id
     private long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Room room;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Customer customer;
 
     @NotNull
@@ -49,6 +49,6 @@ public class Reservation {
     @Min(1) @Max(3)
     private int numberOfPerson;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private Collection<Option> options;
 }
