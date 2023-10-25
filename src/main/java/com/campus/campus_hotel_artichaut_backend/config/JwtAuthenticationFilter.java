@@ -38,13 +38,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String jwt = jwtService.getJwtFromCookies(request);
         final String authHeader = request.getHeader("Authorization");
 
-        if((jwt == null && (authHeader ==  null || !authHeader.startsWith("Bearer "))) || request.getRequestURI().contains("/auth")){
+        if((jwt == null && (authHeader ==  null || !authHeader.startsWith("Bearer "))) || request.getRequestURI().contains("/authentication")){
             filterChain.doFilter(request, response);
             return;
         }
 
         if (jwt == null && authHeader.startsWith("Bearer ")) {
-            jwt = authHeader.substring(7); // after "Bearer "
+            jwt = authHeader.substring(7);
         }
 
 
