@@ -6,16 +6,27 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/api/v1")
-@PreAuthorize("hasAnyRole('ADMIN','USER')")
+@RequestMapping("/api/test")
+//@PreAuthorize("hasAnyRole('ADMIN','USER')")
 public class AuthorizationController {
 
 
 
-    @GetMapping("/admin/resource")
-    @PreAuthorize("hasAuthority('READ_PRIVILEGE') and hasRole('ADMIN')")
-    public ResponseEntity<String> sayHelloWithRoleAdminAndReadAuthority() {
+
+    @GetMapping("/user")
+//    @PreAuthorize("hasAuthority('READ_PRIVILEGE') and hasRole('USER')")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<String> protectedRoute() {
         return ResponseEntity.ok("Hello, you have access to a protected resource that requires admin role and read authority.");
+    }
+
+
+    @GetMapping("/admin")
+//    @PreAuthorize("hasAuthority('READ_PRIVILEGE') and hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> sayHelloWithRoleAdminAndReadAuthority() {
+//        return ResponseEntity.ok("Hello, you have access to a protected resource that requires admin role and read authority.");
+        return ResponseEntity.ok("Hello, you have access to a protected resource that requires admin.");
     }
 
     @DeleteMapping("/admin/resource")

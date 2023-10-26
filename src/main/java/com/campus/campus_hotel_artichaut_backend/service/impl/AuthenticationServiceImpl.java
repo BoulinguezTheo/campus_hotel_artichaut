@@ -1,15 +1,19 @@
 package com.campus.campus_hotel_artichaut_backend.service.impl;
 
 import com.campus.campus_hotel_artichaut_backend.entities.User;
+import com.campus.campus_hotel_artichaut_backend.entities.Customer;
+import com.campus.campus_hotel_artichaut_backend.enums.Role;
 import com.campus.campus_hotel_artichaut_backend.enums.TokenType;
 import com.campus.campus_hotel_artichaut_backend.payload.request.AuthenticationRequest;
 import com.campus.campus_hotel_artichaut_backend.payload.request.RegisterRequest;
 import com.campus.campus_hotel_artichaut_backend.payload.response.AuthenticationResponse;
+import com.campus.campus_hotel_artichaut_backend.repository.CustomerRepository;
 import com.campus.campus_hotel_artichaut_backend.repository.UserRepository;
 import com.campus.campus_hotel_artichaut_backend.service.AuthenticationService;
 import com.campus.campus_hotel_artichaut_backend.service.JwtService;
 import com.campus.campus_hotel_artichaut_backend.service.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -26,33 +30,68 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final UserRepository userRepository;
+    private final CustomerRepository customerRepository;
     private final AuthenticationManager authenticationManager;
     private final RefreshTokenService refreshTokenService;
+
+
     @Override
     public AuthenticationResponse register(RegisterRequest request) {
+
+        String email = request.getEmail();
+        User userExist = userRepository.findByEmail(email).orElse(null);
+        if (userExist != null){
+            return AuthenticationResponse.builder()
+                    .accessToken(null)
+                    .email(request.getEmail())
+                    .id(null)
+                    .refreshToken(null)
+                    .roles(null)
+                    .tokenType(null)
+                    .message("User with email "+request.getEmail()+" already exists")
+                    .status("Failure")
+                    .build();
+        }
+
+
         var user = User.builder()
-                .firstname(request.getFirstname())
-                .lastname(request.getLastname())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(request.getRole())
                 .build();
-        user = userRepository.save(user);
-        var jwt = jwtService.generateToken(user);
-        var refreshToken = refreshTokenService.createRefreshToken(user.getId());
+        var savedUser = userRepository.save(user);
 
-        var roles = user.getRole().getAuthorities()
+
+        if(request.getRole() == Role.USER){
+            var customer = Customer.builder()
+                    .firstName(request.getFirstname())
+                    .lastName(request.getLastname())
+                    .address(request.getAddress())
+                    .user(savedUser)
+                    .build();
+
+            var savedCustomer = customerRepository.save(customer);
+        }
+
+
+
+        var jwt = jwtService.generateToken(savedUser);
+        var refreshToken = refreshTokenService.createRefreshToken(savedUser.getId());
+
+        var roles = savedUser.getRole().getAuthorities()
                 .stream()
                 .map(SimpleGrantedAuthority::getAuthority)
                 .toList();
 
         return AuthenticationResponse.builder()
                 .accessToken(jwt)
-                .email(user.getEmail())
-                .id(user.getId())
+                .email(savedUser.getEmail())
+                .id(savedUser.getId())
                 .refreshToken(refreshToken.getToken())
                 .roles(roles)
                 .tokenType( TokenType.BEARER.name())
+                .message("User created")
+                .status("Success")
                 .build();
     }
 
@@ -75,6 +114,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .id(user.getId())
                 .refreshToken(refreshToken.getToken())
                 .tokenType( TokenType.BEARER.name())
+                .message("User connected")
+                .status("Success")
                 .build();
     }
 }

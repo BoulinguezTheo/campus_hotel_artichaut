@@ -1,11 +1,13 @@
 package com.campus.campus_hotel_artichaut_backend.controller;
 
+import com.campus.campus_hotel_artichaut_backend.entities.User;
 import com.campus.campus_hotel_artichaut_backend.payload.request.AuthenticationRequest;
 import com.campus.campus_hotel_artichaut_backend.payload.request.RefreshTokenRequest;
 import com.campus.campus_hotel_artichaut_backend.payload.request.RegisterRequest;
 import com.campus.campus_hotel_artichaut_backend.payload.response.AuthenticationResponse;
 import com.campus.campus_hotel_artichaut_backend.payload.response.RefreshTokenResponse;
 
+import com.campus.campus_hotel_artichaut_backend.repository.UserRepository;
 import com.campus.campus_hotel_artichaut_backend.service.AuthenticationService;
 import com.campus.campus_hotel_artichaut_backend.service.RefreshTokenService;
 import com.campus.campus_hotel_artichaut_backend.service.JwtService;
@@ -18,7 +20,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -33,7 +34,7 @@ public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
 
-    @PostMapping("/register")
+    @PostMapping("/users")
     public ResponseEntity<AuthenticationResponse> register(@Valid @RequestBody RegisterRequest request) {
         AuthenticationResponse authenticationResponse = authenticationService.register(request);
         ResponseCookie jwtCookie = jwtService.generateJwtCookie(authenticationResponse.getAccessToken());
@@ -44,7 +45,7 @@ public class AuthenticationController {
                 .body(authenticationResponse);
     }
 
-    @PostMapping("/authenticate")
+    @PostMapping("/user")
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
         AuthenticationResponse authenticationResponse = authenticationService.authenticate(request);
         ResponseCookie jwtCookie = jwtService.generateJwtCookie(authenticationResponse.getAccessToken());
@@ -75,7 +76,7 @@ public class AuthenticationController {
                 new UsernamePasswordAuthenticationToken(request.getEmail(),request.getPassword()));
     }
 
-    @PostMapping("/logout")
+    @DeleteMapping("/user")
     public ResponseEntity<Void> logout(HttpServletRequest request){
         String refreshToken = refreshTokenService.getRefreshTokenFromCookies(request);
         if(refreshToken != null) {

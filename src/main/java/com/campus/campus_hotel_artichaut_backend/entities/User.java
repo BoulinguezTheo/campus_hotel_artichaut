@@ -3,8 +3,12 @@ package com.campus.campus_hotel_artichaut_backend.entities;
 import java.util.List;
 import java.util.Collection;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -23,19 +27,25 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 @Table(name = "_user")
 public class User implements UserDetails {
 
+//    @JsonSerialize
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String firstname;
-    private String lastname;
+
+    @Email
+    @NotNull
+    @Column(unique=true)
     private String email;
+
+    @NotBlank
     private String password;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public Collection<? extends GrantedAuthority> getAuthorities()
+    {
         return role.getAuthorities();
     }
     @Override
