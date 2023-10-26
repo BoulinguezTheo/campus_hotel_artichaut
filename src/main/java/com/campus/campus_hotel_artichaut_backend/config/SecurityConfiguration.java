@@ -42,10 +42,8 @@ public class SecurityConfiguration {
                         .accessDeniedHandler(accessDeniedHandler))
                 .authorizeHttpRequests(request ->
                         request
-                                .requestMatchers(
-                                        "/api/authentication"
-                                ).permitAll()
-                                .requestMatchers(HttpMethod.POST,"/api/resource").hasRole("ADMIN")
+                                .requestMatchers("/api/authentication/**").permitAll()
+//                                .requestMatchers(HttpMethod.POST,"/api/resource").hasRole("ADMIN")
                                 .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider).addFilterBefore(
@@ -58,7 +56,7 @@ public class SecurityConfiguration {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("http://localhost:4200");
+//        config.addAllowedOrigin("http://localhost:8081");
         config.setAllowedHeaders(Arrays.asList(
                 HttpHeaders.AUTHORIZATION,
                 HttpHeaders.CONTENT_TYPE,
