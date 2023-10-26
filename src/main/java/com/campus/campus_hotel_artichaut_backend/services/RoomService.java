@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,5 +23,10 @@ public class RoomService {
                 .stream()
                 .map(roomMapper::entityToDto)
                 .toList();
+    }
+
+    public Optional<RoomDto> getRoomById(Long id) {
+        return this.roomRepository.findById(id)
+                .map(this.roomMapper::entityToDto);
     }
 }
