@@ -1,4 +1,4 @@
-package com.campus.campus_hotel_artichaut_backend.entities;
+package com.campus.campus_hotel_artichaut_backend.model.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.PositiveOrZero;

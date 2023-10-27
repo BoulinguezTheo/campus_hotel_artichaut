@@ -1,6 +1,6 @@
 package com.campus.campus_hotel_artichaut_backend.repository;
 
-import com.campus.campus_hotel_artichaut_backend.entities.User;
+import com.campus.campus_hotel_artichaut_backend.model.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 

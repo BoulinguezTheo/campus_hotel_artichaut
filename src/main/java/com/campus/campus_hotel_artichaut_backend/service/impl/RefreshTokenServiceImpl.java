@@ -1,7 +1,7 @@
 package com.campus.campus_hotel_artichaut_backend.service.impl;
 
-import com.campus.campus_hotel_artichaut_backend.entities.RefreshToken;
-import com.campus.campus_hotel_artichaut_backend.entities.User;
+import com.campus.campus_hotel_artichaut_backend.model.entities.RefreshToken;
+import com.campus.campus_hotel_artichaut_backend.model.entities.User;
 import com.campus.campus_hotel_artichaut_backend.enums.TokenType;
 import com.campus.campus_hotel_artichaut_backend.exception.TokenException;
 import com.campus.campus_hotel_artichaut_backend.payload.request.RefreshTokenRequest;
