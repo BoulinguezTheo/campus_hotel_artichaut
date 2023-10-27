@@ -1,7 +1,7 @@
 package com.campus.campus_hotel_artichaut_backend.controller;
 
-import com.campus.campus_hotel_artichaut_backend.dtos.RoomDto;
-import com.campus.campus_hotel_artichaut_backend.services.RoomService;
+import com.campus.campus_hotel_artichaut_backend.dto.RoomDto;
+import com.campus.campus_hotel_artichaut_backend.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
