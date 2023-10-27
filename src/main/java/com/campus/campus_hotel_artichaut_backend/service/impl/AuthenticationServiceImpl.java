@@ -1,7 +1,7 @@
 package com.campus.campus_hotel_artichaut_backend.service.impl;
 
-import com.campus.campus_hotel_artichaut_backend.entities.User;
-import com.campus.campus_hotel_artichaut_backend.entities.Customer;
+import com.campus.campus_hotel_artichaut_backend.model.entities.User;
+import com.campus.campus_hotel_artichaut_backend.model.entities.Customer;
 import com.campus.campus_hotel_artichaut_backend.enums.Role;
 import com.campus.campus_hotel_artichaut_backend.enums.TokenType;
 import com.campus.campus_hotel_artichaut_backend.payload.request.AuthenticationRequest;
@@ -13,7 +13,6 @@ import com.campus.campus_hotel_artichaut_backend.service.AuthenticationService;
 import com.campus.campus_hotel_artichaut_backend.service.JwtService;
 import com.campus.campus_hotel_artichaut_backend.service.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

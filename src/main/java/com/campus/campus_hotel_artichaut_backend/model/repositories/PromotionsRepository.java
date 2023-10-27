@@ -1,6 +1,6 @@
-package com.campus.campus_hotel_artichaut_backend.repositories;
+package com.campus.campus_hotel_artichaut_backend.model.repositories;
 
-import com.campus.campus_hotel_artichaut_backend.entities.Promotion;
+import com.campus.campus_hotel_artichaut_backend.model.entities.Promotion;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
