@@ -1,6 +1,6 @@
 package com.campus.campus_hotel_artichaut_backend.service;
 
-import com.campus.campus_hotel_artichaut_backend.entities.RefreshToken;
+import com.campus.campus_hotel_artichaut_backend.model.entities.RefreshToken;
 import com.campus.campus_hotel_artichaut_backend.payload.request.RefreshTokenRequest;
 import com.campus.campus_hotel_artichaut_backend.payload.response.RefreshTokenResponse;
 import jakarta.servlet.http.HttpServletRequest;

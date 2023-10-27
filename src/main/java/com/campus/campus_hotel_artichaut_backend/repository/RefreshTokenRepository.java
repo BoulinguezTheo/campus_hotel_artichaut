@@ -1,6 +1,6 @@
 package com.campus.campus_hotel_artichaut_backend.repository;
 
-import com.campus.campus_hotel_artichaut_backend.entities.RefreshToken;
+import com.campus.campus_hotel_artichaut_backend.model.entities.RefreshToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
