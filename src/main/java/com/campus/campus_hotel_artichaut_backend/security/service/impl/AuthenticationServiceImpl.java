@@ -1,5 +1,6 @@
 package com.campus.campus_hotel_artichaut_backend.security.service.impl;
 
+import com.campus.campus_hotel_artichaut_backend.model.repositories.CustomerRepository;
 import com.campus.campus_hotel_artichaut_backend.security.entity.User;
 import com.campus.campus_hotel_artichaut_backend.model.entity.Customer;
 import com.campus.campus_hotel_artichaut_backend.security.enums.Role;
@@ -7,7 +8,6 @@ import com.campus.campus_hotel_artichaut_backend.security.enums.TokenType;
 import com.campus.campus_hotel_artichaut_backend.security.payload.request.AuthenticationRequest;
 import com.campus.campus_hotel_artichaut_backend.security.payload.request.RegisterRequest;
 import com.campus.campus_hotel_artichaut_backend.security.payload.response.AuthenticationResponse;
-import com.campus.campus_hotel_artichaut_backend.model.repositories.CustomerRepository;
 import com.campus.campus_hotel_artichaut_backend.security.repository.UserRepository;
 import com.campus.campus_hotel_artichaut_backend.security.service.AuthenticationService;
 import com.campus.campus_hotel_artichaut_backend.security.service.JwtService;
