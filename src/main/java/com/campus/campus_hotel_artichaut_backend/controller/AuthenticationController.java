@@ -33,6 +33,10 @@ public class AuthenticationController {
 
     @PostMapping("/users")
     public ResponseEntity<AuthenticationResponse> register(@Valid @RequestBody RegisterRequest request) {
+
+        System.out.println(request.getEmail());
+        System.out.println(request.getRole());
+        System.out.println("ttttttt");
         AuthenticationResponse authenticationResponse = authenticationService.register(request);
         ResponseCookie jwtCookie = jwtService.generateJwtCookie(authenticationResponse.getAccessToken());
         ResponseCookie refreshTokenCookie = refreshTokenService.generateRefreshTokenCookie(authenticationResponse.getRefreshToken());
