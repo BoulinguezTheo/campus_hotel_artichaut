@@ -1,6 +1,7 @@
 package com.campus.campus_hotel_artichaut_backend.service;
 
 import com.campus.campus_hotel_artichaut_backend.dto.ReservationDto;
+import com.campus.campus_hotel_artichaut_backend.exception.NoRoomAvailableException;
 import com.campus.campus_hotel_artichaut_backend.model.RoomName;
 import com.campus.campus_hotel_artichaut_backend.model.entity.Reservation;
 import com.campus.campus_hotel_artichaut_backend.model.entity.Room;
@@ -31,7 +32,7 @@ public class ReservationService {
                 reservationDto.getEndDate()
         );
         if (availableRoom.isEmpty()) {
-            return null;
+            throw new NoRoomAvailableException(reservationDto.getRoomName(), reservationDto.getStartDate(), reservationDto.getEndDate());
         }
         Reservation reservation = Reservation.builder()
                 .room(availableRoom.get())
