@@ -1,7 +1,5 @@
 package com.campus.campus_hotel_artichaut_backend.exception;
 
-import com.campus.campus_hotel_artichaut_backend.model.entity.RoomType;
-
 import java.util.Date;
 
 public class NoRoomAvailableException extends Exception {
