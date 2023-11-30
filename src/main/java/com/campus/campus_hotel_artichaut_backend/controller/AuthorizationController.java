@@ -21,8 +21,6 @@ public class AuthorizationController {
     }
 
 
-
-
     @GetMapping("/admin")
 //    @PreAuthorize("hasAuthority('READ_PRIVILEGE') and hasRole('ADMIN')")
     @PreAuthorize("hasRole('ADMIN')")
