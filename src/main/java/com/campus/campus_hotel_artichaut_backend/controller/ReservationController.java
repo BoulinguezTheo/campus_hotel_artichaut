@@ -3,6 +3,7 @@ package com.campus.campus_hotel_artichaut_backend.controller;
 import com.campus.campus_hotel_artichaut_backend.dto.ReservationDto;
 import com.campus.campus_hotel_artichaut_backend.exception.NoRoomAvailableException;
 import com.campus.campus_hotel_artichaut_backend.service.ReservationService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +20,7 @@ public class ReservationController {
     private final ReservationService reservationService;
 
     @PostMapping
-    public ReservationDto reserveRoom(@RequestBody ReservationDto reservationDto) {
+    public ReservationDto reserveRoom(@RequestBody @Valid ReservationDto reservationDto) {
         try {
             return this.reservationService.reserveRoom(reservationDto);
         } catch (NoRoomAvailableException e) {

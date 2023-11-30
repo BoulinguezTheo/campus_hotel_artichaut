@@ -36,33 +36,34 @@ public class ReservationService {
         if (availableRoom.isEmpty()) {
             throw new NoRoomAvailableException(reservationDto.getRoomName(), reservationDto.getStartDate(), reservationDto.getEndDate());
         }
-        Reservation reservationToSave = buildReservationToSave(reservationDto, availableRoom);
+        Reservation reservationToSave = buildReservationToSave(reservationDto, availableRoom.get());
         Reservation reservationMade = this.reservationRepository.save(reservationToSave);
         return this.mapReservationEntityToReservationDto(reservationMade);
     }
 
-    private Reservation buildReservationToSave(ReservationDto reservationDto, Optional<Room> availableRoom) {
+    private Reservation buildReservationToSave(ReservationDto reservationDto, Room availableRoom) {
         return Reservation.builder()
-                .room(availableRoom.get())
+                .room(availableRoom)
                 .reservationDate(new Date())
                 .isPaid(false)
                 .isCancelled(false)
-                .roomPrice(availableRoom.get().getType().getPrice())
+                .roomPrice(availableRoom.getType().getPrice())
                 .isMailSent(false)
                 .startDate(reservationDto.getStartDate())
                 .endDate(reservationDto.getEndDate())
                 .customer(this.customerRepository.findById(reservationDto.getCustomerId()).orElseThrow())
-                .room(availableRoom.get())
+                .room(availableRoom)
+                .numberOfPerson(reservationDto.getNumberOfPerson())
                 .build();
     }
 
     private Optional<Room> findAvailableRoom(RoomName roomName, Date startDate, Date endDate) {
         List<Room> rooms = this.roomRepository.findByType_Name(roomName);
-        Set<Long> roomIds = this.reservationRepository.findByEndDateAfterAndStartDateBefore(startDate, endDate).stream()
+        Set<Long> notAvailableRoomIds = this.reservationRepository.findByEndDateAfterAndStartDateBefore(startDate, endDate).stream()
                 .map(reservation -> reservation.getRoom().getId())
                 .collect(Collectors.toSet());
         return rooms.stream()
-                .filter(room -> !roomIds.contains(room.getId()))
+                .filter(room -> !notAvailableRoomIds.contains(room.getId()))
                 .findFirst();
     }
 
