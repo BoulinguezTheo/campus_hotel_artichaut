@@ -45,7 +45,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     .email(request.getEmail())
                     .id(null)
                     .refreshToken(null)
-                    .roles(null)
+//                    .roles(null)
                     .tokenType(null)
                     .message("User with email "+request.getEmail()+" already exists")
                     .status("Failure")
@@ -56,21 +56,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         var user = User.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(request.getRole())
+                .role(Role.USER)
                 .build();
         var savedUser = userRepository.save(user);
 
 
-        if(request.getRole() == Role.USER){
-            var customer = Customer.builder()
-                    .firstName(request.getFirstname())
-                    .lastName(request.getLastname())
-                    .address(request.getAddress())
-                    .user(savedUser)
-                    .build();
+        var customer = Customer.builder()
+                .firstName(request.getFirstname())
+                .lastName(request.getLastname())
+                .address(request.getAddress())
+                .user(savedUser)
+                .build();
 
-            var savedCustomer = customerRepository.save(customer);
-        }
+        var savedCustomer = customerRepository.save(customer);
 
 
 
@@ -87,7 +85,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .email(savedUser.getEmail())
                 .id(savedUser.getId())
                 .refreshToken(refreshToken.getToken())
-                .roles(roles)
+//                .roles(roles)
                 .tokenType( TokenType.BEARER.name())
                 .message("User created")
                 .status("Success")
@@ -108,7 +106,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         var refreshToken = refreshTokenService.createRefreshToken(user.getId());
         return AuthenticationResponse.builder()
                 .accessToken(jwt)
-                .roles(roles)
+//                .roles(roles)
                 .email(user.getEmail())
                 .id(user.getId())
                 .refreshToken(refreshToken.getToken())

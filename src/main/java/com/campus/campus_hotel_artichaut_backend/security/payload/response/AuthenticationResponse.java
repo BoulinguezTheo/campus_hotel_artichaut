@@ -16,7 +16,7 @@ import java.util.List;
 public class AuthenticationResponse {
     private Long id;
     private String email;
-    private List<String> roles;
+//    private List<String> roles;
     private String message;
     private String status;
 
