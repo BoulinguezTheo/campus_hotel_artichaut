@@ -10,6 +10,7 @@ import com.campus.campus_hotel_artichaut_backend.model.repositories.ReservationR
 import com.campus.campus_hotel_artichaut_backend.model.repositories.RoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -25,7 +26,8 @@ public class ReservationService {
     private final RoomRepository roomRepository;
     private final CustomerRepository customerRepository;
 
-    public ReservationDto reserveRoom(ReservationDto reservationDto) {
+    @Transactional
+    public ReservationDto reserveRoom(ReservationDto reservationDto) throws NoRoomAvailableException {
         Optional<Room> availableRoom = this.findAvailableRoom(
                 RoomName.valueOf(reservationDto.getRoomName()),
                 reservationDto.getStartDate(),
@@ -34,33 +36,44 @@ public class ReservationService {
         if (availableRoom.isEmpty()) {
             throw new NoRoomAvailableException(reservationDto.getRoomName(), reservationDto.getStartDate(), reservationDto.getEndDate());
         }
-        Reservation reservation = Reservation.builder()
+        Reservation reservationToSave = buildReservationToSave(reservationDto, availableRoom);
+        Reservation reservationMade = this.reservationRepository.save(reservationToSave);
+        return this.mapReservationEntityToReservationDto(reservationMade);
+    }
+
+    private Reservation buildReservationToSave(ReservationDto reservationDto, Optional<Room> availableRoom) {
+        return Reservation.builder()
                 .room(availableRoom.get())
                 .reservationDate(new Date())
                 .isPaid(false)
                 .isCancelled(false)
                 .roomPrice(availableRoom.get().getType().getPrice())
                 .isMailSent(false)
+                .startDate(reservationDto.getStartDate())
+                .endDate(reservationDto.getEndDate())
                 .customer(this.customerRepository.findById(reservationDto.getCustomerId()).orElseThrow())
+                .room(availableRoom.get())
                 .build();
-        Reservation reservationMade = this.reservationRepository.save(reservation);
-        return new ReservationDto(
-                reservationMade.getId(),
-                reservationDto.getCustomerId(),
-                reservationMade.getStartDate(),
-                reservationMade.getEndDate(),
-                reservationMade.getRoom().getType().getName().getTitle(),
-                reservationMade.getNumberOfPerson()
-        );
     }
 
     private Optional<Room> findAvailableRoom(RoomName roomName, Date startDate, Date endDate) {
         List<Room> rooms = this.roomRepository.findByType_Name(roomName);
         Set<Long> roomIds = this.reservationRepository.findByEndDateAfterAndStartDateBefore(startDate, endDate).stream()
-                .map(Reservation::getId)
+                .map(reservation -> reservation.getRoom().getId())
                 .collect(Collectors.toSet());
         return rooms.stream()
                 .filter(room -> !roomIds.contains(room.getId()))
                 .findFirst();
+    }
+
+    private ReservationDto mapReservationEntityToReservationDto(Reservation reservation) {
+        return new ReservationDto(
+                reservation.getId(),
+                reservation.getCustomer().getId(),
+                reservation.getStartDate(),
+                reservation.getEndDate(),
+                reservation.getRoom().getType().getName().getTitle(),
+                reservation.getNumberOfPerson()
+        );
     }
 }
