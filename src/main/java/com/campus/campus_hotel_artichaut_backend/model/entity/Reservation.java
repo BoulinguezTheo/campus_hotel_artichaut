@@ -5,12 +5,18 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Collection;
 import java.util.Date;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Reservation {
 
@@ -47,7 +53,8 @@ public class Reservation {
     @PositiveOrZero
     private float roomPrice;
 
-    @Min(1) @Max(3)
+    @Min(1)
+    @Max(3)
     private int numberOfPerson;
 
     @ManyToMany(fetch = FetchType.LAZY)
