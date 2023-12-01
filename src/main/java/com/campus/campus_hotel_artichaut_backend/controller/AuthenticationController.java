@@ -48,6 +48,7 @@ public class AuthenticationController {
 
     @PostMapping("/tokens")
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
+
         AuthenticationResponse authenticationResponse = authenticationService.authenticate(request);
         ResponseCookie jwtCookie = jwtService.generateJwtCookie(authenticationResponse.getAccessToken());
         ResponseCookie refreshTokenCookie = refreshTokenService.generateRefreshTokenCookie(authenticationResponse.getRefreshToken());
@@ -90,6 +91,5 @@ public class AuthenticationController {
                 .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
                 .header(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString())
                 .build();
-
     }
 }
