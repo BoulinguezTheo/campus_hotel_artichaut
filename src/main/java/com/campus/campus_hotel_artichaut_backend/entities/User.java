@@ -3,6 +3,7 @@ package com.campus.campus_hotel_artichaut_backend.entities;
 import java.util.List;
 import java.util.Collection;
 
+import com.campus.campus_hotel_artichaut_backend.security.enums.Role;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 
@@ -15,7 +16,6 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
 import org.springframework.security.core.GrantedAuthority;
-import com.campus.campus_hotel_artichaut_backend.enums.Role;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
